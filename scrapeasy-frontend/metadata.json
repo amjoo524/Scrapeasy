@@ -1,0 +1,6 @@
+{
+  "name": "ScrapCollector",
+  "description": "A modern scrap metal & recycling collection platform.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
