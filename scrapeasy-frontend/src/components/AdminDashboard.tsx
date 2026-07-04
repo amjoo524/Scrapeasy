@@ -228,7 +228,7 @@ export default function AdminDashboard() {
   const scrapRates = useScrapRates();
   const updateRates = useUpdateScrapRates();
 
-const dashboardData = dashboard.data as DashboardData | undefined;
+const dashboardData = dashboard?.data as DashboardData | undefined;
 const stats = dashboardData?.stats;
 
   const mergedRates = useMemo(() => {
