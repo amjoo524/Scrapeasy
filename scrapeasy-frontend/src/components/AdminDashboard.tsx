@@ -228,7 +228,8 @@ export default function AdminDashboard() {
   const scrapRates = useScrapRates();
   const updateRates = useUpdateScrapRates();
 
- const stats = (dashboard.data as DashboardData | undefined)?.stats;
+const dashboardData = dashboard.data as DashboardData | undefined;
+const stats = dashboardData?.stats;
 
   const mergedRates = useMemo(() => {
     return (scrapRates.data ?? []).map(r => ({
@@ -378,7 +379,7 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
                 <ChartCard title="Revenue" sub="Last 6 months (PKR)">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={dashboard.data?.revenue_chart ?? []} barSize={32}>
+                 <BarChart data={dashboardData?.revenue_chart ?? []} barSize={32}>
                       <CartesianGrid strokeDasharray="3 3" stroke={C.slate200} vertical={false} />
                       <XAxis dataKey="label" tick={{ fontSize: 11, fill: C.slate400 }} axisLine={false} tickLine={false} />
                       <YAxis tick={{ fontSize: 11, fill: C.slate400 }} axisLine={false} tickLine={false} />
@@ -393,7 +394,7 @@ export default function AdminDashboard() {
 
                 <ChartCard title="Pickups" sub="Last 7 days">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={dashboard.data?.pickups_chart ?? []}>
+                    <LineChart data={dashboardData?.pickups_chart ?? []}>
                       <CartesianGrid strokeDasharray="3 3" stroke={C.slate200} vertical={false} />
                       <XAxis dataKey="label" tick={{ fontSize: 11, fill: C.slate400 }} axisLine={false} tickLine={false} />
                       <YAxis tick={{ fontSize: 11, fill: C.slate400 }} axisLine={false} tickLine={false} allowDecimals={false} />
@@ -411,14 +412,14 @@ export default function AdminDashboard() {
                 <ChartCard title="Scrap Distribution" sub="By weight collected (kg)">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
-                      <Pie data={dashboard.data?.scrap_distribution ?? []}
-                        dataKey="value" nameKey="label"
-                        cx="50%" cy="50%" innerRadius={55} outerRadius={85}
-                        paddingAngle={3}>
-                        {(dashboard.data?.scrap_distribution ?? []).map((_, i) => (
-                          <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
-                        ))}
-                      </Pie>
+                  <Pie data={dashboardData?.scrap_distribution ?? []}
+  dataKey="value" nameKey="label"
+  cx="50%" cy="50%" innerRadius={55} outerRadius={85}
+  paddingAngle={3}>
+  {(dashboardData?.scrap_distribution ?? []).map((_, i) => (
+    <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+  ))}
+</Pie>
                       <Tooltip contentStyle={{ background: C.slate900, border: "none", borderRadius: 12, color: C.white, fontSize: 12 }} />
                       <Legend iconType="circle" iconSize={8}
                         wrapperStyle={{ fontSize: 11, color: C.slate600 }} />
@@ -428,7 +429,7 @@ export default function AdminDashboard() {
 
                 <ChartCard title="Carbon Impact" sub="CO₂ saved per month (kg)">
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={dashboard.data?.carbon_chart ?? []}>
+                    <AreaChart data={dashboardData?.carbon_chart ?? []}>
                       <defs>
                         <linearGradient id="carbonGrad" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor={C.green} stopOpacity={0.3} />
