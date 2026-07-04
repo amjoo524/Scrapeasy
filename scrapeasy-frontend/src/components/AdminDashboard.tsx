@@ -1,4 +1,5 @@
 "use client";
+import { DashboardData } from '../lib/api';
 
 import React, { useMemo, useState } from "react";
 import {
@@ -227,7 +228,7 @@ export default function AdminDashboard() {
   const scrapRates = useScrapRates();
   const updateRates = useUpdateScrapRates();
 
-  const stats = dashboard.data?.stats;
+ const stats = (dashboard.data as DashboardData | undefined)?.stats;
 
   const mergedRates = useMemo(() => {
     return (scrapRates.data ?? []).map(r => ({
