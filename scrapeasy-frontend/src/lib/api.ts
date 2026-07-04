@@ -58,35 +58,35 @@ export interface ScrapRate {
 }
 
 // ✅ Admin APIs (Protected by Bearer Token)
-export const adminApi = {
-  getDashboard: () => api.get<DashboardData>('/admin/dashboard').then((r) => r.data),
-  getCustomers: () => api.get<UserRecord[]>('/admin/customers').then((r) => r.data),
-  getRiders: () => api.get<UserRecord[]>('/admin/riders').then((r) => r.data),
-  getScrapRates: () => api.get<ScrapRate[]>('/admin/scrap/rates').then((r) => r.data),
-  updateScrapRates: (rates: { id: string; rate_per_kg: number }[]) =>
-    api.put('/admin/scrap/rates', { rates }).then((r) => r.data),
-};
-
-// ✅ Public APIs (Auth & Scrap) - OTP removed, Email/Password added
 export const publicApi = {
-  // 👇 UPDATED: Email + Password Login with Safe Checks
+  // 👇 OTP SEND (Mobile Signup ke liye)
+  sendOtp: async (email: string) => {
+    const response = await api.post('/auth/send-otp', { email });
+    return response.data;
+  },
+
+  // 👇 OTP VERIFY (Mobile ke liye)
+  verifyOtp: async (email: string, token: string) => {
+    const response = await api.post('/auth/verify-otp', { email, token });
+    return response.data;
+  },
+
+  // 👇 Email + Password Login (Admin ke liye)
   signInWithPassword: async (email: string, password: string) => {
     const response = await api.post('/auth/login', { email, password });
     
-    // ✅ SAFE CHECK 1: Agar response hi undefined hai
     if (!response || !response.data) {
       throw new Error('Invalid response from server');
     }
 
-    // ✅ SAFE CHECK 2: Agar access_token missing hai
     if (!response.data.access_token) {
       throw new Error('Access token missing in response');
     }
 
-    return response.data; // { message, access_token }
+    return response.data;
   },
 
-  // ✅ Ye public APIs mobile app ke liye rahengi (Scrap rates, Pickup)
+  // 👇 Public Scrap APIs
   getRates: () => api.get('/scrap/rates/today').then((r) => r.data),
   createPickup: (body: Record<string, unknown>) =>
     api.post('/pickups', body).then((r) => r.data),
